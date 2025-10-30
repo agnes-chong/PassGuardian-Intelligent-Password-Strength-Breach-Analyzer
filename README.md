@@ -1,6 +1,5 @@
 # 🔐 PassGuardian: Intelligent Password Security & Breach Analyzer  
 **Developer:** Agnes Chong  
-**Version:** 2025 Edition
 **Tech Stack:** Python · Streamlit · Chrome Extension · SQLite · AI Policy Advisor  
 
 ---
