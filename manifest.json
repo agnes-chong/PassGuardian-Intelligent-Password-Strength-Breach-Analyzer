@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "PassGuardian",
+  "version": "1.0",
+  "description": "Real-time password security analyzer powered by AI and HIBP.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["http://127.0.0.1:5000/*"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["frontend/content.js"],
+      "css": ["frontend/styles.css"]
+    }
+  ],
+  "action": {
+    "default_popup": "frontend/popup.html",
+    "default_icon": "frontend/icon.png"
+  },
+  "icons": {
+    "16": "frontend/icon.png",
+    "48": "frontend/icon.png",
+    "128": "frontend/icon.png"
+  }
+}

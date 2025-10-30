@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>PassGuardian</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <style>
+    :root {
+      --accent: #00b7ff;
+      --danger: #ef4444;
+      --warn: #facc15;
+      --success: #22c55e;
+      --muted: #94a3b8;
+    }
+
+    /* 🌙 Dark Theme */
+    body[data-theme="dark"] {
+      --bg-dark: #0f172a;
+      --bg-light: #1e293b;
+      --text: #f1f5f9;
+      background: linear-gradient(180deg, var(--bg-dark), var(--bg-light));
+      color: var(--text);
+    }
+
+    /* ☀️ Light Theme */
+    body[data-theme="light"] {
+      --bg-dark: #f3f4f6;
+      --bg-light: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      background: linear-gradient(180deg, var(--bg-dark), var(--bg-light));
+      color: var(--text);
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      width: 360px;
+      margin: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: linear-gradient(90deg, #0078ff, #00b7ff);
+      padding: 14px;
+      text-align: center;
+      font-weight: 600;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      background: rgba(255,255,255,0.05);
+      padding: 8px 0;
+    }
+
+    nav button {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+
+    nav button:hover { color: var(--accent); }
+
+    section {
+      display: none;
+      padding: 16px 18px;
+      line-height: 1.5;
+    }
+
+    section.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    h4 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      margin: 6px 0 10px 0;
+      padding: 8px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.07);
+      color: var(--text);
+      font-size: 13px;
+      box-sizing: border-box;
+    }
+
+    input[type="checkbox"] {
+      width: auto;
+      margin-right: 6px;
+      accent-color: var(--accent);
+      transform: scale(1.1);
+      vertical-align: middle;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+
+    button.main {
+      width: 100%;
+      margin-top: 14px;
+      padding: 9px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      background: linear-gradient(90deg, #0078ff, #00b7ff);
+      color: white;
+      cursor: pointer;
+      transition: 0.25s;
+      font-size: 13px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    button.main:hover {filter: brightness(1.1);}
+
+    .toggle-theme {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .strength-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: #1e293b;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .fill {
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s, background 0.4s;
+    }
+
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
+    }
+
+    .output {
+      background: rgba(255,255,255,0.07);
+      padding: 8px;
+      border-radius: 6px;
+      margin-top: 8px;
+      font-size: 12px;
+      word-break: break-all;
+    }
+
+    .history-item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      padding: 8px;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      padding: 12px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 6px;
+    }
+
+    hr {
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin: 14px 0;
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+  <header>
+    🔒 PassGuardian
+    <button id="themeToggle" class="toggle-theme">🌙</button>
+  </header>
+
+  <nav>
+    <button data-tab="analyze">🔍 Analyze</button>
+    <button data-tab="history">🧾 History</button>
+    <button data-tab="settings">⚙️ Settings</button>
+    <button data-tab="stats">📊 Dashboard</button>
+  </nav>
+
+  <!-- 🔍 Analyzer Tab -->
+  <section id="analyze" class="active">
+    <h4>Test a password</h4>
+    <input id="userPassword" type="password" placeholder="Enter your password..." />
+    <div class="strength-bar"><div id="bar" class="fill"></div></div>
+    <div id="risk" style="font-weight:600;margin-top:8px;">Waiting...</div>
+    <div id="tip" style="font-size:12px;color:var(--muted);min-height:18px;font-style:italic;"></div>
+    <hr>
+    <h4>Generate strong password</h4>
+    <label for="len">Length:</label>
+    <input type="number" id="len" value="14" min="8" max="32" />
+    <label><input id="upper" type="checkbox" checked /> Uppercase</label>
+    <label><input id="num" type="checkbox" checked /> Numbers</label>
+    <label><input id="sym" type="checkbox" checked /> Symbols</label>
+    <button id="genBtn" class="main">Generate</button>
+    <div id="genOut" class="output">—</div>
+  </section>
+
+  <!-- 🧾 History Tab -->
+  <section id="history">
+    <div id="historyList">No history yet.</div>
+  </section>
+
+  <!-- ⚙️ Settings Tab -->
+  <section id="settings">
+    <label><input type="checkbox" id="autoAnalyze" checked /> Auto-analyze passwords on all sites</label>
+    <label><input type="checkbox" id="show2fa" checked /> Show 2FA advice after analysis</label>
+    <hr>
+    <label>Language:</label>
+    <select id="lang">
+      <option value="en">🇺🇸 English</option>
+      <option value="ms">🇲🇾 Bahasa Melayu</option>
+      <option value="zh">🇨🇳 中文</option>
+    </select>
+  </section>
+
+  <!-- 📊 Dashboard Tab -->
+  <section id="stats">
+    <h4>Mini Security Dashboard</h4>
+    <div class="metric"><strong>Avg. Strength:</strong> <span id="avgStrength">—</span></div>
+    <div class="metric"><strong>Breach Rate:</strong> <span id="breachRate">—</span></div>
+  </section>
+
+  <footer>© 2025 PassGuardian — Protect Smarter</footer>
+
+  <script src="translations.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

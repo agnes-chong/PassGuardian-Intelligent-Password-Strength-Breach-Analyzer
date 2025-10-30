@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run PassGuardian Backend",
+      "type": "shell",
+      "command": "C:\\Users\\ROG\\anaconda3\\python.exe",
+      "args": [
+        "backend/app.py"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
